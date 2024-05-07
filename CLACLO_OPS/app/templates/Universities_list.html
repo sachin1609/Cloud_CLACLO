@@ -1,0 +1,55 @@
+<!--{% extends 'base.html' %}
+
+{% block content %}
+<h2>Universities</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for university in universities %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ university.name }}</td>
+            <td>{{ university.is_active|yesno:"Active,Inactive" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}-->
+
+
+<!-- university_service/templates/university_service/university_list.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>University List</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for university in universities %}
+        <tr>
+            <td>{{ university.name }}</td>
+            <td>{{ university.is_active|yesno:"Active,Inactive" }}</td>
+            <td>
+                {% if not university.is_active %}
+                <a href="{% url 'activate_university' university.id %}" class="btn btn-success">Activate</a>
+                {% else %}
+                <a href="{% url 'deactivate_university' university.id %}" class="btn btn-danger">Deactivate</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

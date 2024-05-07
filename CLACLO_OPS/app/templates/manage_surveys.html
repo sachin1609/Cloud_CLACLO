@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Surveys{% endblock %}
+
+{% block content %}
+<h2>Manage Surveys</h2>
+<form action="/surveys/" method="post">
+    <div class="mb-3">
+        <label for="surveyTitle" class="form-label">Survey Title</label>
+        <input type="text" class="form-control" id="surveyTitle" name="title" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Create Survey</button>
+</form>
+<div class="mt-4">
+    <h3>Survey Reports</h3>
+    <ul class="list-group">
+        {% for report in survey_reports %}
+        <li class="list-group-item">{{ report.title }} - Results: {{ report.results }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

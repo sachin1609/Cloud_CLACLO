@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Survey Reports{% endblock %}
+
+{% block content %}
+<h2>Survey Reports</h2>
+<ul class="list-group">
+    {% for report in reports %}
+    <li class="list-group-item">
+        Survey: {{ report.survey.title }} - Results: {{ report.results }}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
