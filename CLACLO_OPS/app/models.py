@@ -19,7 +19,7 @@ class Survey(Base):
     university_id = Column(Integer, ForeignKey('universities.id'))
     university = relationship("University", back_populates="surveys")
     survey_type = Column(String, index=True)  # "student" or "staff"
-    conducted_on = Column(Date, default=func.now())
+    conducted_on = Column(Date)
     data = Column(Text)  # JSON or any serialized format
 
 class SurveyReport(Base):

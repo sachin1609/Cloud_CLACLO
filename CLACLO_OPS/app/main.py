@@ -29,7 +29,7 @@ async def root():
     return templates.TemplateResponse("base.html", {"request": request}) """
 
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from .routers import university, survey
@@ -54,3 +54,12 @@ app.include_router(survey_router, prefix="/surveys", tags=["Surveys"])
 @app.get("/", response_class=HTMLResponse, tags=["Root"])
 async def root(request: Request):
     return templates.TemplateResponse("base.html", {"request": request})
+
+@app.get("/create_university", response_class=HTMLResponse)
+async def get_create_university(request: Request):
+    return templates.TemplateResponse("create_university.html", {"request": request})
+
+@app.get("/manage_universities", response_class=HTMLResponse)
+async def get_create_university(request: Request):
+    return templates.TemplateResponse("manage_universities.html", {"request": request})
+
