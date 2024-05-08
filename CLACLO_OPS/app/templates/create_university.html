@@ -1,9 +1,15 @@
+
 {% extends "base.html" %}
 {% block title %}Create University{% endblock %}
 {% block content %}
 <h1>Create a New University</h1>
-<form method="post">
+<form method="post" action="/create_university/">
     <input type="text" name="name" placeholder="University Name" required>
     <button type="submit">Submit</button>
 </form>
+{% if message %}
+<div class="alert alert-success" role="alert">
+    {{ message }}
+</div>
+{% endif %}
 {% endblock %}
