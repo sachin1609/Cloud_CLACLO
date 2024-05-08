@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: claclo-app
-        image: gcr.io/rare-disk-419803/claclo_image:latest2
+        image: gcr.io/rare-disk-419803/claclo_image:latest3
         ports:
         - containerPort: 80
         env:
