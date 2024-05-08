@@ -22,6 +22,7 @@ class SurveyBase(BaseModel):
     university_id: int
     survey_type: str
     data: str
+    conducted_on: date
 
 class SurveyCreate(SurveyBase):
     pass

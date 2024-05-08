@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "\\app",
+    "\\app\\routers",
+    "\\CLACLO_OPS",
+    "\\CLACLO_OPS\\templates",
+    "\\tests",
+    "\\tests\\e2e",
+    "\\tests\\integration",
+    "\\tests\\unit",
+    "\\venv"
+  ],
+  "PreviewInSolutionExplorer": false
+}

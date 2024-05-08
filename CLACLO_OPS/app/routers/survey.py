@@ -1,3 +1,4 @@
+"""
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.templating import Jinja2Templates
@@ -37,7 +38,7 @@ def get_university_survey_reports(university_id: int, db: Session = Depends(depe
     if not db_reports:
         raise HTTPException(status_code=404, detail="No survey reports found for this university")
     return db_reports
-
+"""
 
 """ 
 
@@ -90,3 +91,64 @@ def get_university_survey_reports(request: Request, university_id: int, db: Sess
         raise HTTPException(status_code=404, detail="No survey reports found for this university")
     return templates.TemplateResponse("view_all_survey_reports.html", {"request": request, "reports": db_reports})
  """
+
+
+
+
+from fastapi import APIRouter, Depends, HTTPException
+from http import HTTPStatus
+from sqlalchemy.orm import Session
+from typing import List
+from ..models import Survey, SurveyReport
+from ..schemas import SurveyCreate, SurveyDisplay, SurveyReportCreate, SurveyReportDisplay
+from ..dependencies import get_db
+from datetime import datetime
+
+router = APIRouter()
+
+# Survey Management
+@router.post("/surveys/", response_model=SurveyDisplay, status_code=HTTPStatus.CREATED)
+def create_survey(survey: SurveyCreate, db: Session = Depends(get_db)):
+    try:
+        db_survey = Survey(
+            university_id=survey.university_id,
+            survey_type=survey.survey_type,
+            conducted_on=survey.conducted_on, #datetime.now(),
+            data=survey.data
+        )
+        db.add(db_survey)
+        db.commit()
+        db.refresh(db_survey)
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail=str(e))
+    return db_survey
+
+@router.post("/survey-reports/", response_model=SurveyReportDisplay, status_code=HTTPStatus.CREATED)
+def create_survey_report(report: SurveyReportCreate, db: Session = Depends(get_db)):
+    try:
+        db_report = SurveyReport(
+            survey_id=report.survey_id,
+            detailed_report=report.detailed_report
+        )
+        db.add(db_report)
+        db.commit()
+        db.refresh(db_report)
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail=str(e))
+    return db_report
+
+@router.get("/survey-reports/{survey_report_id}", response_model=SurveyReportDisplay)
+def get_survey_report(survey_report_id: int, db: Session = Depends(get_db)):
+    db_report = db.query(SurveyReport).filter(SurveyReport.id == survey_report_id).first()
+    if not db_report:
+        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Survey report not found")
+    return db_report
+
+@router.get("/university/{university_id}/survey-reports", response_model=List[SurveyReportDisplay])
+def get_university_survey_reports(university_id: int, db: Session = Depends(get_db)):
+    db_reports = db.query(SurveyReport).join(Survey).filter(Survey.university_id == university_id).all()
+    if not db_reports:
+        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="No survey reports found for this university")
+    return db_reports
