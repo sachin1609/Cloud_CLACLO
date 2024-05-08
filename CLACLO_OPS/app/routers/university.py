@@ -142,10 +142,11 @@ async def manage_universities(request: Request, db: Session = Depends(dependenci
     })
 
 
-@router.get("/universities/", response_model=list[schemas.UniversityBase])
+"""@router.get("/universities/", response_model=list[schemas.UniversityBase])
 def read_universities(skip: int = 0, limit: int = 100, db: Session = Depends(dependencies.get_db)):
     universities = db.query(models.University).offset(skip).limit(limit).all()
     return universities
+"""
 
 # University Management
 @router.post("/universities/", response_model=schemas.UniversityDisplay)
